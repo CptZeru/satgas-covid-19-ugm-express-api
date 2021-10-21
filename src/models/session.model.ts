@@ -1,8 +1,4 @@
 import mongoose from 'mongoose'
-import bcrypt from 'bcrypt'
-import config from 'config'
-import {NextFunction} from "express";
-import {boolean} from "zod";
 import {UserDocument} from "./user.model";
 
 export interface SessionDocument extends mongoose.Document {
