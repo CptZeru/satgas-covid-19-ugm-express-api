@@ -24,6 +24,10 @@ export async function validatePassword({email, password}:{email: string, passwor
     return omit(user.toJSON(), 'password')
 }
 
+export async function findUsers(query?: FilterQuery<UserDocument>, options?: QueryOptions) {
+    return UserModel.paginate(query, options)
+}
+
 export async function findUser(query: FilterQuery<UserDocument>, options: QueryOptions = {lean:true}){
     return UserModel.findOne(query, {}, options)
 }

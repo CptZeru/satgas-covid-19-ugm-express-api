@@ -1,13 +1,14 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 import config from 'config'
-import { ObjectId } from 'mongoose'
+import mongoosePaginate from 'mongoose-paginate-v2'
 
 export interface UserInput {
     email: string,
     name: string,
     password: string,
 }
+
 export interface UserDocument extends UserInput, mongoose.Document {
     createdAt: Date,
     updatedAt: Date,
@@ -37,6 +38,8 @@ userSchema.pre("save", async function(next) {
 
     return next();
 })
+
+userSchema.plugin(mongoosePaginate)
 
 userSchema.methods.comparePassword = async function(candidatePassword: string): Promise<boolean> {
     const user = this as UserDocument
