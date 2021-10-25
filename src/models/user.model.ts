@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 import config from 'config'
+import { ObjectId } from 'mongoose'
 
 export interface UserInput {
     email: string,
