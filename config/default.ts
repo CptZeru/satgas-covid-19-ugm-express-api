@@ -4,6 +4,9 @@ export default {
     saltWorkFactor: 10,
     accessTokenTtl: '15m',
     refreshTokenTtl: '1y',
+    superAdminRoleId: '617810c979b0dc469783bee1',
+    operatorRoleId: '61780e8b79b0dc469783beb7',
+    commanderRoleId: '61780ed579b0dc469783bebb',
     publicKey: `-----BEGIN PUBLIC KEY-----
 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCXzZerpx9qdaelwt1U7NCpWXQK
 km1OW4ohDF/7g01xDtYf8Nox9wzhhVQrFD+G4eaJoWxIhJYQTgT4ijMlpjXs07Mc
