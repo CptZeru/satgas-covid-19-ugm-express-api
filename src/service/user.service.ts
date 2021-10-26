@@ -1,4 +1,4 @@
-import {FilterQuery, QueryOptions} from 'mongoose'
+import {FilterQuery, QueryOptions, UpdateQuery} from 'mongoose'
 import { omit } from 'lodash'
 import UserModel, { UserDocument, UserInput } from "../models/user.model";
 
@@ -28,8 +28,19 @@ export async function findUsers(query?: FilterQuery<UserDocument>, options?: Que
     return UserModel.paginate(query, options)
 }
 
-export async function findUser(query: FilterQuery<UserDocument>, options: QueryOptions = {lean:true}){
+export async function findUser(
+    query: FilterQuery<UserDocument>,
+    options: QueryOptions = { lean:true, populate: 'role' }
+) {
     return UserModel.findOne(query, {}, options)
+}
+
+export async function findAndUpdateUser(
+    query: FilterQuery<UserDocument>,
+    update: UpdateQuery<UserDocument>,
+    options: QueryOptions
+) {
+    return UserModel.findOneAndUpdate(query, update, options)
 }
 
 export async function deleteUser(query: FilterQuery<UserDocument>) {

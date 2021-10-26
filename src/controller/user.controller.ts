@@ -1,8 +1,8 @@
 import {Request, Response} from "express";
 import logger from "../utils/logger";
 import { omit } from 'lodash'
-import {createUser, deleteUser, findUser, findUsers} from '../service/user.service'
-import {CreateUserInput, DeleteUserInput, ReadUserInput} from "../schema/user.schema";
+import {createUser, deleteUser, findAndUpdateUser, findUser, findUsers} from '../service/user.service'
+import {CreateUserInput, DeleteUserInput, ReadUserInput, UpdateUserInput} from "../schema/user.schema";
 import mongoose from 'mongoose'
 import {safeQuery} from "../utils/safeQuery.utils";
 
@@ -10,8 +10,36 @@ export async function createUserHandler(
     req: Request<{},{}, CreateUserInput["body"]>, res: Response
 ) {
     try {
-        const user = await createUser(req.body)
+        const { role, ...body } = req.body
+
+        const newBody = { role: new mongoose.Types.ObjectId(role), ...body }
+
+        const user = await createUser(newBody)
         return res.send(omit(user , 'password'))
+    } catch (e: any) {
+        logger.error(e)
+        return res.status(409).send({ error: e.message })
+    }
+}
+
+export async function updateUserHandler(
+    req: Request<UpdateUserInput['params'], {}, UpdateUserInput['body']>,
+    res: Response
+) {
+    try {
+        const userId = req.params.userId
+
+        const query = { _id: userId }
+
+        const update = req.body
+
+        const user = await findUser(query)
+
+        if (!user) return res.sendStatus(404)
+
+        const updatedUser = await findAndUpdateUser(query, update, { new: true }) // return updated data
+
+        return res.send(updatedUser)
     } catch (e: any) {
         logger.error(e)
         return res.status(409).send({ error: e.message })
@@ -28,7 +56,6 @@ export async function getUserHandler(req: Request<ReadUserInput["params"]>, res:
 }
 
 export async function getUsersHandler(req: Request, res: Response) {
-    console.log(req.query)
     const {
         select,
         page,
@@ -45,11 +72,9 @@ export async function getUsersHandler(req: Request, res: Response) {
         sort,
         lean,
         offset: offset ? parseInt(offset):0,
-        limit: limit ? parseInt(limit):5
+        limit: limit ? parseInt(limit):5,
+        populate: 'role'
     }
-    console.log(query)
-    console.log(options)
-    // const users = await findUsers()
     const users = await findUsers(query, options)
 
     return res.send(users)

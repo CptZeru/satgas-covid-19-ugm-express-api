@@ -8,7 +8,7 @@ const params = {
     })
 }
 
-export const createUserSchema = object({
+const payload = {
     body: object({
         name: string({
             required_error: 'name is required'
@@ -22,10 +22,22 @@ export const createUserSchema = object({
         email: string({
             required_error: 'email  is required'
         }).email('not a valid email'),
+        role: string({
+            required_error: 'role is required'
+        })
     }).refine((data) => data.password === data.passwordConfirmation, {
         message: 'passwords do not match',
         path: ['passwordConfirmation']
     })
+}
+
+export const createUserSchema = object({
+    ...payload
+})
+
+export const updateUserSchema = object({
+    ...payload,
+    ...params
 })
 
 export const getUserSchema = object({
@@ -37,5 +49,6 @@ export const deleteUserSchema = object({
 })
 
 export type CreateUserInput = Omit<TypeOf<typeof createUserSchema>, 'body.passwordConfirmation'>
+export type UpdateUserInput = Omit<TypeOf<typeof updateUserSchema>, 'body.passwordConfirmation'>
 export type ReadUserInput = TypeOf<typeof getUserSchema>
 export type DeleteUserInput = TypeOf<typeof deleteUserSchema>

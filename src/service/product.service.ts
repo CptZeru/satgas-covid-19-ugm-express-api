@@ -9,7 +9,7 @@ export async function createProduct(
 
 export async function findProduct(
     query: FilterQuery<ProductDocument>,
-    options: QueryOptions = {lean:true}
+    options: QueryOptions = { lean:true, populate: 'user' }
 ) {
     return ProductModel.findOne(query,{},options)
 }
