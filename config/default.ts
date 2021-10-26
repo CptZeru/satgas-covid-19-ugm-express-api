@@ -7,6 +7,7 @@ export default {
     superAdminRoleId: '617810c979b0dc469783bee1',
     operatorRoleId: '61780e8b79b0dc469783beb7',
     commanderRoleId: '61780ed579b0dc469783bebb',
+    catchErrorStatusCode: 409,
     publicKey: `-----BEGIN PUBLIC KEY-----
 MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCXzZerpx9qdaelwt1U7NCpWXQK
 km1OW4ohDF/7g01xDtYf8Nox9wzhhVQrFD+G4eaJoWxIhJYQTgT4ijMlpjXs07Mc

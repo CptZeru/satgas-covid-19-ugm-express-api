@@ -6,6 +6,7 @@ import {CreateUserInput, DeleteUserInput, ReadUserInput, UpdateUserInput} from "
 import mongoose from 'mongoose'
 import {safeQuery} from "../utils/safeQuery.utils";
 import {findRole} from "../service/role.service";
+import config from "config";
 
 export async function createUserHandler(
     req: Request<{},{}, CreateUserInput["body"]>, res: Response
@@ -19,7 +20,7 @@ export async function createUserHandler(
         return res.send(omit(user , 'password'))
     } catch (e: any) {
         logger.error(e)
-        return res.status(409).send({ error: e.message })
+        return res.status(config.get<number>('catchErrorStatusCode')).send({ error: e.message })
     }
 }
 
@@ -51,63 +52,82 @@ export async function updateUserHandler(
         return res.send(updatedUser)
     } catch (e: any) {
         logger.error(e)
-        return res.status(409).send({ error: e.message })
+        return res.status(config.get<number>('catchErrorStatusCode')).send({ error: e.message })
     }
 }
 
 export async function getUserHandler(req: Request<ReadUserInput["params"]>, res: Response) {
-    const userId = req.params.userId
-    const user = await findUser({ _id: userId })
+    try {
+        const userId = req.params.userId
+        const user = await findUser({ _id: userId })
 
-    if(!user) return res.sendStatus(404)
+        if(!user) return res.sendStatus(404)
 
-    return res.send(user)
+        return res.send(user)
+    } catch (e: any) {
+        logger.error(e)
+        return res.status(config.get<number>('catchErrorStatusCode')).send({ error: e.message })
+    }
 }
 
 export async function getUsersHandler(req: Request, res: Response) {
-    const {
-        select,
-        page,
-        sort = 'createdAt',
-        populate,
-        lean = true,
-        offset,
-        limit,
-        ...query
-    }= safeQuery(req)
-    const options = {
-        select,
-        page: page ? parseInt(page):1,
-        sort,
-        lean,
-        offset: offset ? parseInt(offset):0,
-        limit: limit ? parseInt(limit):5,
-        populate: 'role'
-    }
-    const users = await findUsers(query, options)
+    try {
+        const {
+            select,
+            page,
+            sort = 'createdAt',
+            populate,
+            lean = true,
+            offset,
+            limit,
+            ...query
+        }= safeQuery(req)
+        const options = {
+            select,
+            page: page ? parseInt(page):1,
+            sort,
+            lean,
+            offset: offset ? parseInt(offset):0,
+            limit: limit ? parseInt(limit):5,
+            populate: 'role'
+        }
+        const users = await findUsers(query, options)
 
-    return res.send(users)
+        return res.send(users)
+    } catch (e: any) {
+        logger.error(e)
+        return res.status(config.get<number>('catchErrorStatusCode')).send({ error: e.message })
+    }
 }
 
 export async function getMeUserHandler(req: Request<ReadUserInput["params"]>, res: Response) {
-    const userId = res.locals.user
+    try {
+        const userId = res.locals.user
 
-    const user = await findUser({ _id: userId })
+        const user = await findUser({ _id: userId })
 
-    if(!user) return res.sendStatus(404)
+        if(!user) return res.sendStatus(404)
 
-    return res.send(user)
+        return res.send(user)
+    } catch (e: any) {
+        logger.error(e)
+        return res.status(config.get<number>('catchErrorStatusCode')).send({ error: e.message })
+    }
 }
 
 export async function deleteUserHandler(req: Request<DeleteUserInput["params"]>, res: Response) {
+    try {
+        const userId = req.params.userId
 
-    const userId = req.params.userId
+        const user = await findUser({ _id: userId })
 
-    const user = await findUser({ _id: userId })
+        if(!user) return res.sendStatus(404)
 
-    if(!user) return res.sendStatus(404)
+        await deleteUser({ _id: userId })
 
-    await deleteUser({ _id: userId })
-
-    return res.sendStatus(200)
+        return res.sendStatus(200)
+    } catch (e: any) {
+        logger.error(e)
+        return res.status(config.get<number>('catchErrorStatusCode')).send({ error: e.message })
+    }
 }
