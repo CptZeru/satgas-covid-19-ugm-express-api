@@ -9,13 +9,54 @@ import {
 } from "../controller/role.controller";
 import validateResource from "../middleware/validateResource";
 import {createRoleSchema, deleteRoleSchema, readRoleSchema, updateRoleSchema} from "../schema/role.schema";
+import roleRestriction from "../middleware/roleRestriction";
+import config from "config";
 
 const roleRoute = Router()
 
-roleRoute.get('/', requireUser, getRolesHandler)
-roleRoute.post('/', [requireUser, validateResource(createRoleSchema)], createRoleHandler)
-roleRoute.get('/:roleId', [requireUser, validateResource(readRoleSchema)], getRoleHandler)
-roleRoute.put('/:roleId', [requireUser, validateResource(updateRoleSchema)], updateRoleHandler)
-roleRoute.delete('/:roleId', [requireUser, validateResource(deleteRoleSchema)], deleteRoleHandler)
+roleRoute.get(
+    '/',
+   [
+       requireUser,
+       roleRestriction([config.get<string>('superAdminRoleId')])
+   ],
+    getRolesHandler
+)
+roleRoute.post(
+    '/',
+    [
+        requireUser,
+        roleRestriction([config.get<string>('superAdminRoleId')]),
+        validateResource(createRoleSchema)
+    ],
+    createRoleHandler
+)
+roleRoute.get(
+    '/:roleId',
+    [
+        requireUser,
+        roleRestriction([config.get<string>('superAdminRoleId')]),
+        validateResource(readRoleSchema)
+    ],
+    getRoleHandler
+)
+roleRoute.put(
+    '/:roleId',
+    [
+        requireUser,
+        roleRestriction([config.get<string>('superAdminRoleId')]),
+        validateResource(updateRoleSchema)
+    ],
+    updateRoleHandler
+)
+roleRoute.delete(
+    '/:roleId',
+    [
+        requireUser,
+        roleRestriction([config.get<string>('superAdminRoleId')]),
+        validateResource(deleteRoleSchema)
+    ],
+    deleteRoleHandler
+)
 
 export default roleRoute
