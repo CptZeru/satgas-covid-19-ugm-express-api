@@ -13,7 +13,7 @@ export async function createUser(input: UserInput) {
 
 // called parameter destructuring
 export async function validatePassword({email, password}:{email: string, password: string}) {
-    const user = await UserModel.findOne({ email })
+    const user = await UserModel.findOne({ email }, {}, { populate: 'role'})
 
     if(!user) return false
 

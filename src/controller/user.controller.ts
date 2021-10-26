@@ -5,6 +5,7 @@ import {createUser, deleteUser, findAndUpdateUser, findUser, findUsers} from '..
 import {CreateUserInput, DeleteUserInput, ReadUserInput, UpdateUserInput} from "../schema/user.schema";
 import mongoose from 'mongoose'
 import {safeQuery} from "../utils/safeQuery.utils";
+import {findRole} from "../service/role.service";
 
 export async function createUserHandler(
     req: Request<{},{}, CreateUserInput["body"]>, res: Response
@@ -31,13 +32,21 @@ export async function updateUserHandler(
 
         const query = { _id: userId }
 
-        const update = req.body
+        const payload = req.body
 
         const user = await findUser(query)
 
         if (!user) return res.sendStatus(404)
 
-        const updatedUser = await findAndUpdateUser(query, update, { new: true }) // return updated data
+        if(payload.email) user.email = payload.email
+        if(payload.password) user.password = payload.password
+        if(payload.name) user.name = payload.name
+        if(payload.role) {
+            const role = await findRole({ _id: payload.role })
+            if (role) user.role = role._id
+        }
+
+        const updatedUser = await findAndUpdateUser(query, user, { new: true }) // return updated data
 
         return res.send(updatedUser)
     } catch (e: any) {

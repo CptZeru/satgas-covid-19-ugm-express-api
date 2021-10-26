@@ -31,12 +31,35 @@ const payload = {
     })
 }
 
+const updatePayload = {
+    body: object({
+        name: string({
+            required_error: 'name is required'
+        }).optional(),
+        password: string({
+            required_error: 'password is required'
+        }).min(6, 'password too short - should be 6 chars minimum').optional(),
+        passwordConfirmation: string({
+            required_error: 'passwordConfirmation is required'
+        }).optional(),
+        email: string({
+            required_error: 'email  is required'
+        }).email('not a valid email').optional(),
+        role: string({
+            required_error: 'role is required'
+        }).optional()
+    }).refine((data) => data?.password === data?.passwordConfirmation, {
+        message: 'passwords do not match',
+        path: ['passwordConfirmation']
+    })
+}
+
 export const createUserSchema = object({
     ...payload
 })
 
 export const updateUserSchema = object({
-    ...payload,
+    ...updatePayload,
     ...params
 })
 
