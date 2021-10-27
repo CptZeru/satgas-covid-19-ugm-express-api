@@ -3,6 +3,7 @@ import {CreateRoleInput, DeleteRoleInput, ReadRoleInput, UpdateRoleInput} from "
 import {createRole, deleteRole, findAndUpdateRole, findRole, findRoles} from "../service/role.service";
 import {safeQuery} from "../utils/safeQuery.utils";
 import logger from "../utils/logger";
+import config from "config";
 
 export async function createRoleHandler(req: Request<{}, {}, CreateRoleInput['body']>, res: Response) {
     try {

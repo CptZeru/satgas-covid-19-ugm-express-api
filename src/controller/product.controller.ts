@@ -2,6 +2,7 @@ import {Request, Response} from "express";
 import {CreateProductInput, DeleteProductInput, ReadProductInput, UpdateProductInput} from "../schema/product.schema";
 import {createProduct, deleteProduct, findAndUpdateProduct, findProduct} from "../service/product.service";
 import logger from "../utils/logger";
+import config from "config";
 
 export async function createProductHandler(
     req: Request<{}, {}, CreateProductInput['body']>,
