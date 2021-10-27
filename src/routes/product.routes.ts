@@ -14,27 +14,27 @@ import {
     updateProductHandler
 } from "../controller/product.controller";
 
-const productRoute = Router()
+const productRoutes = Router()
 
-productRoute.post(
+productRoutes.post(
     '/',
     [requireUser, validateResource(createProductSchema)],
     createProductHandler
 )
-productRoute.put(
+productRoutes.put(
     '/:productId',
     [requireUser, validateResource(updateProductSchema)],
     updateProductHandler
 )
-productRoute.get(
+productRoutes.get(
     '/:productId',
     validateResource(getProductSchema),
     getProductHandler
 )
-productRoute.delete(
+productRoutes.delete(
     '/:productId',
     [requireUser, validateResource(deleteProductSchema)],
     deleteProductHandler
 )
 
-export default productRoute
+export default productRoutes

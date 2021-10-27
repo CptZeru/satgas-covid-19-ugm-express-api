@@ -12,9 +12,9 @@ import {createRoleSchema, deleteRoleSchema, readRoleSchema, updateRoleSchema} fr
 import roleRestriction from "../middleware/roleRestriction";
 import config from "config";
 
-const roleRoute = Router()
+const roleRoutes = Router()
 
-roleRoute.get(
+roleRoutes.get(
     '/',
    [
        requireUser,
@@ -22,7 +22,7 @@ roleRoute.get(
    ],
     getRolesHandler
 )
-roleRoute.post(
+roleRoutes.post(
     '/',
     [
         requireUser,
@@ -31,7 +31,7 @@ roleRoute.post(
     ],
     createRoleHandler
 )
-roleRoute.get(
+roleRoutes.get(
     '/:roleId',
     [
         requireUser,
@@ -40,7 +40,7 @@ roleRoute.get(
     ],
     getRoleHandler
 )
-roleRoute.put(
+roleRoutes.put(
     '/:roleId',
     [
         requireUser,
@@ -49,7 +49,7 @@ roleRoute.put(
     ],
     updateRoleHandler
 )
-roleRoute.delete(
+roleRoutes.delete(
     '/:roleId',
     [
         requireUser,
@@ -59,4 +59,4 @@ roleRoute.delete(
     deleteRoleHandler
 )
 
-export default roleRoute
+export default roleRoutes

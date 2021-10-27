@@ -1,15 +1,17 @@
 import {Request, Response, Router} from 'express'
-import productRoute from "./product.routes";
-import sessionRoute from "./session.routes";
-import userRoute from "./user.routes";
-import roleRoute from "./role.routes";
+import productRoutes from "./product.routes";
+import sessionRoutes from "./session.routes";
+import userRoutes from "./user.routes";
+import roleRoutes from "./role.routes";
+import vaccineEventRoutes from "./vaccineEvent.routes";
 
 const routes = Router()
 
 routes.get('/ping', (req: Request, res: Response) => res.sendStatus(200))
-routes.use('/api/users', userRoute)
-routes.use('/api/products', productRoute)
-routes.use('/api/sessions', sessionRoute)
-routes.use('/api/roles', roleRoute)
+routes.use('/api/users', userRoutes)
+routes.use('/api/products', productRoutes)
+routes.use('/api/sessions', sessionRoutes)
+routes.use('/api/roles', roleRoutes)
+routes.use('/api/event/vaccine', vaccineEventRoutes)
 
 export default routes

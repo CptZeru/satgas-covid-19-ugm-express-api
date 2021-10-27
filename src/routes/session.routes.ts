@@ -8,10 +8,10 @@ import {
 } from "../controller/session.controller";
 import requireUser from "../middleware/requireUser";
 
-const sessionRoute = Router()
+const sessionRoutes = Router()
 
-sessionRoute.post('/', validateResource(createSessionSchema),createUserSessionHandler)
-sessionRoute.get('/', requireUser, getUserSessionHandler)
-sessionRoute.delete('/', requireUser, deleteUserSessionHandler)
+sessionRoutes.post('/', validateResource(createSessionSchema),createUserSessionHandler)
+sessionRoutes.get('/', requireUser, getUserSessionHandler)
+sessionRoutes.delete('/', requireUser, deleteUserSessionHandler)
 
-export default sessionRoute
+export default sessionRoutes

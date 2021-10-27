@@ -12,10 +12,10 @@ import requireUser from "../middleware/requireUser";
 import roleRestriction from "../middleware/roleRestriction";
 import config from "config";
 
-const userRoute = Router()
+const userRoutes = Router()
 
-userRoute.get('/me', requireUser,getMeUserHandler)
-userRoute.post(
+userRoutes.get('/me', requireUser,getMeUserHandler)
+userRoutes.post(
     '/',
     [
         requireUser,
@@ -24,7 +24,7 @@ userRoute.post(
     ],
     createUserHandler
 )
-userRoute.get(
+userRoutes.get(
     '/',
     [
         requireUser,
@@ -32,7 +32,7 @@ userRoute.get(
     ],
     getUsersHandler
 )
-userRoute.get(
+userRoutes.get(
     '/:userId',
     [
         requireUser,
@@ -41,7 +41,7 @@ userRoute.get(
     ],
     getUserHandler
 )
-userRoute.delete(
+userRoutes.delete(
     '/:userId',
     [
         requireUser,
@@ -50,7 +50,7 @@ userRoute.delete(
     ],
     deleteUserHandler
 )
-userRoute.put(
+userRoutes.put(
     '/:userId',
     [
         requireUser,
@@ -60,4 +60,4 @@ userRoute.put(
     updateUserHandler
 )
 
-export default userRoute
+export default userRoutes
