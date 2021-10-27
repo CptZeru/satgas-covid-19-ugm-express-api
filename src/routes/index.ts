@@ -5,6 +5,7 @@ import userRoutes from "./user.routes";
 import roleRoutes from "./role.routes";
 import vaccineEventRoutes from "./vaccineEvent.routes";
 import patientRoutes from "./patient.routes";
+import tracingRoutes from "./tracing.routes";
 
 const routes = Router()
 
@@ -15,5 +16,6 @@ routes.use('/api/sessions', sessionRoutes)
 routes.use('/api/roles', roleRoutes)
 routes.use('/api/event/vaccine', vaccineEventRoutes)
 routes.use('/api/patients', patientRoutes)
+routes.use('/api/tracings', tracingRoutes)
 
 export default routes

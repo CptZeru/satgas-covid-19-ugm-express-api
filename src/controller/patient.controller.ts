@@ -11,7 +11,6 @@ import {
 } from "../service/patient.service";
 import {PatientInput} from "../models/patient.model";
 import {safeQuery} from "../utils/safeQuery.utils";
-import {deleteVaccineEvent, findAndUpdateVaccineEvent, findVaccineEvent} from "../service/vaccineEvent.service";
 
 export async function createPatientHandler(
     req: Request<{},{},CreatePatientInput['body']>,
