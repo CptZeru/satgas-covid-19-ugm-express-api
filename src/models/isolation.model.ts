@@ -1,15 +1,13 @@
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate-v2'
-import bcrypt from "bcrypt";
 import config from "config";
-import {UserDocument} from "./user.model";
 
 export interface IsolationInput {
     patient: mongoose.Types.ObjectId,
     location: string,
     entryDate: string,
     status: string,
-    estimatedReturnDate?: string,
+    estimatedReturnDate?: number,
     actualReturnDate?: string,
     createdBy: mongoose.Types.ObjectId,
     updatedBy: mongoose.Types.ObjectId
